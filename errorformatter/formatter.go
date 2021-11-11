@@ -8,6 +8,9 @@ type StructError struct {
 }
 
 func FormatError(e error) []StructError {
+	if e == nil {
+		return nil
+	}
 	var formatter []StructError
 
 	for _, err := range e.(validator.ValidationErrors) {
