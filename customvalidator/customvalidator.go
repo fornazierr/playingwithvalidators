@@ -47,8 +47,23 @@ func cpfValidator(f validator.FieldLevel) bool {
 	}
 }
 
+//Realiza a validação de CNPJ
 func cnpjValidator(f validator.FieldLevel) bool {
-	return true
+	val := f.Field().String()
+
+	newCnpj := val[:12]
+
+	dv1 := utilGeraDigitoCNPJ(newCnpj)
+	newCnpj += dv1
+
+	dv2 := utilGeraDigitoCNPJ(newCnpj)
+	newCnpj += dv2
+
+	if strings.Compare(newCnpj, val) == 0 {
+		return true
+	} else {
+		return false
+	}
 }
 
 func FormatError(e error) []StructError {
