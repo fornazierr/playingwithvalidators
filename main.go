@@ -23,7 +23,7 @@ func main() {
 		Email:    "david@email,com",
 		Age:      103,
 		Birthday: "1999-11-02",
-		CPF:      "11144477735",
+		CPF:      "111444777322",
 	}
 	err := validate.Struct(withError)
 	if err != nil {

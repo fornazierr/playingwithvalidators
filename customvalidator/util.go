@@ -1,4 +1,4 @@
-package errorformatter
+package customvalidator
 
 import (
 	"fmt"

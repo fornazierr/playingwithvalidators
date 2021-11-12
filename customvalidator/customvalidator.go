@@ -1,4 +1,4 @@
-package errorformatter
+package customvalidator
 
 import (
 	"log"
@@ -23,6 +23,7 @@ func InitValidador() *validator.Validate {
 		defer lock.Unlock()
 		Validador = validator.New()
 		Validador.RegisterValidation("cpf", cpfValidator)
+		Validador.RegisterValidation("cnpj", cnpjValidator)
 	}
 
 	return Validador
@@ -44,6 +45,10 @@ func cpfValidator(f validator.FieldLevel) bool {
 	} else {
 		return false
 	}
+}
+
+func cnpjValidator(f validator.FieldLevel) bool {
+	return true
 }
 
 func FormatError(e error) []StructError {
