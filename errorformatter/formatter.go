@@ -1,6 +1,8 @@
 package errorformatter
 
 import (
+	"log"
+	"strings"
 	"sync"
 
 	"github.com/go-playground/validator/v10"
@@ -16,6 +18,7 @@ var Validador *validator.Validate
 
 func InitValidador() *validator.Validate {
 	if Validador == nil {
+		log.Println("Validador nulo, iniciando")
 		lock.Lock()
 		defer lock.Unlock()
 		Validador = validator.New()
@@ -25,12 +28,22 @@ func InitValidador() *validator.Validate {
 	return Validador
 }
 
+//Realiza a validação de CPF
 func cpfValidator(f validator.FieldLevel) bool {
-	if f.Field().IsNil() {
+	val := f.Field().String()
+	newCpf := val[:9]
+
+	dv1 := calculaDigitoCPF(newCpf)
+	newCpf += dv1
+
+	dv2 := calculaDigitoCPF(newCpf)
+	newCpf += dv2
+
+	if strings.Compare(newCpf, val) == 0 {
+		return true
+	} else {
 		return false
 	}
-
-	return false
 }
 
 func FormatError(e error) []StructError {
