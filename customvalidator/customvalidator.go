@@ -16,7 +16,7 @@ type StructError struct {
 var lock = &sync.Mutex{}
 var Validador *validator.Validate
 
-func InitValidador() *validator.Validate {
+func Instance() *validator.Validate {
 	if Validador == nil {
 		log.Println("Validador nulo, iniciando")
 		lock.Lock()
@@ -83,6 +83,7 @@ func FormatError(e error) []StructError {
 	return formatter
 }
 
+//Translate to verbose
 func translateTag(tag string) string {
 	switch tag {
 	case "lte":
@@ -91,6 +92,8 @@ func translateTag(tag string) string {
 		return "Greater than or equal"
 	case "email":
 		return "E-mail"
+	case "cpf":
+		return "CPF inválido"
 	default:
 		return tag
 	}

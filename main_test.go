@@ -13,7 +13,7 @@ func TestFormatErrorUser1(t *testing.T) {
 		Birthday: "2001-01-01",
 		CPF:      "111444777322",
 	}
-	err := customvalidator.InitValidador().Struct(u)
+	err := customvalidator.Instance().Struct(u)
 	if err == nil {
 		t.Fatalf("Some fields with error: %s", err.Error())
 	}
