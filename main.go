@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
-	"playingwitherrors/errorformatter"
+	"playingwitherrors/customvalidator"
 )
 
 type User struct {
@@ -16,7 +16,7 @@ type User struct {
 
 func main() {
 	log.Println("Starting playingwithvalidators")
-	validate := errorformatter.InitValidador()
+	validate := customvalidator.InitValidador()
 
 	withError := User{
 		Name:     "david",
@@ -27,7 +27,7 @@ func main() {
 	}
 	err := validate.Struct(withError)
 	if err != nil {
-		formated := errorformatter.FormatError(err)
+		formated := customvalidator.FormatError(err)
 		fmt.Printf("Found:\n%+v\n", formated)
 	}
 
