@@ -71,9 +71,9 @@ func FormatError(e error) []StructError {
 func translateTag(tag string) string {
 	switch tag {
 	case "lte":
-		return "Less than"
+		return "Less than or equal"
 	case "gte":
-		return "Greater than"
+		return "Greater than or equal"
 	case "email":
 		return "E-mail"
 	default:

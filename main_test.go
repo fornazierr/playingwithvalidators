@@ -1,10 +1,8 @@
 package main
 
 import (
-	"playingwitherrors/errorformatter"
+	"playingwitherrors/customvalidator"
 	"testing"
-
-	"github.com/go-playground/validator/v10"
 )
 
 func TestFormatErrorUser1(t *testing.T) {
@@ -13,10 +11,10 @@ func TestFormatErrorUser1(t *testing.T) {
 		Email:    "email@email.com",
 		Age:      20,
 		Birthday: "2001-01-01",
+		CPF:      "111444777322",
 	}
-	err := validator.New().Struct(u)
-	res := errorformatter.FormatError(err)
-	if res == nil {
-		t.Fatal("Name fild accept only alphabetical characters")
+	err := customvalidator.InitValidador().Struct(u)
+	if err == nil {
+		t.Fatalf("Some fields with error: %s", err.Error())
 	}
 }
