@@ -75,7 +75,7 @@ func FormatError(e error) []StructError {
 	for _, err := range e.(validator.ValidationErrors) {
 		ex := StructError{
 			Field: err.Field(),
-			Tag:   translateTag(err.Tag()),
+			Tag:   translateTag(err.Tag(), ""),
 		}
 		formatter = append(formatter, ex)
 	}
@@ -84,17 +84,37 @@ func FormatError(e error) []StructError {
 }
 
 //Translate to verbose
-func translateTag(tag string) string {
-	switch tag {
+func translateTag(myTag string, myStruct string) string {
+	switch myTag {
 	case "lte":
-		return "Less than or equal"
+		return translateTagLte(myStruct)
 	case "gte":
 		return "Greater than or equal"
 	case "email":
 		return "E-mail"
 	case "cpf":
 		return "CPF inválido"
+	case "required":
+		return translateTagRequired(myStruct)
 	default:
-		return tag
+		return myTag
+	}
+}
+
+func translateTagLte(myStruct string) string {
+	switch myStruct {
+	case "models.User":
+		return "Idade precisa ser maior que 0 e menor que 100."
+	default:
+		return "Less than or equal"
+	}
+}
+
+func translateTagRequired(myStruct string) string {
+	switch myStruct {
+	case "models.User":
+		return ""
+	default:
+		return ""
 	}
 }

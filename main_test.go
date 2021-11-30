@@ -2,11 +2,12 @@ package main
 
 import (
 	"playingwitherrors/customvalidator"
+	"playingwitherrors/models"
 	"testing"
 )
 
 func TestFormatErrorUser1(t *testing.T) {
-	u := User{
+	u := &models.User{
 		Name:     "!@#$!@#@!#@!$@!#",
 		Email:    "email@email.com",
 		Age:      20,
