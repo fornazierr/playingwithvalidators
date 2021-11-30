@@ -2,6 +2,7 @@ package customvalidator
 
 import (
 	"log"
+	"playingwitherrors/models"
 	"strings"
 	"sync"
 
@@ -9,8 +10,11 @@ import (
 )
 
 type StructError struct {
-	Field string
-	Tag   string
+	Struct  string      `json:"struct"`
+	Field   string      `json:"field"`
+	Tag     string      `json:"tag"`
+	Message string      `json:"message"`
+	Value   interface{} `json:"value"`
 }
 
 var lock = &sync.Mutex{}
@@ -66,7 +70,7 @@ func cnpjValidator(f validator.FieldLevel) bool {
 	}
 }
 
-func FormatError(e error) []StructError {
+func FormatError(e error, myStruct string) []StructError {
 	if e == nil {
 		return nil
 	}
@@ -74,8 +78,11 @@ func FormatError(e error) []StructError {
 
 	for _, err := range e.(validator.ValidationErrors) {
 		ex := StructError{
-			Field: err.Field(),
-			Tag:   translateTag(err.Tag(), ""),
+			Struct:  myStruct,
+			Field:   err.Field(),
+			Tag:     err.Tag(),
+			Message: translateStruct(myStruct, err.Tag(), err.Field()),
+			Value:   err.Value(),
 		}
 		formatter = append(formatter, ex)
 	}
@@ -83,38 +90,29 @@ func FormatError(e error) []StructError {
 	return formatter
 }
 
-//Translate to verbose
-func translateTag(myTag string, myStruct string) string {
+func translateStruct(myStruct string, myTag string, myField string) string {
+	switch myStruct {
+	case "models.User":
+		return models.TranslateUserError(myField, myTag)
+	default:
+		return translateTagDefault(myTag)
+	}
+}
+
+//Translate to verbose the default tags
+func translateTagDefault(myTag string) string {
 	switch myTag {
 	case "lte":
-		return translateTagLte(myStruct)
+		return "Less than or equal."
 	case "gte":
-		return "Greater than or equal"
+		return "Greater than or equal."
 	case "email":
-		return "E-mail"
+		return "E-mail not valid."
 	case "cpf":
-		return "CPF inválido"
+		return "CPF not valid.."
 	case "required":
-		return translateTagRequired(myStruct)
+		return "Fields required."
 	default:
 		return myTag
-	}
-}
-
-func translateTagLte(myStruct string) string {
-	switch myStruct {
-	case "models.User":
-		return "Idade precisa ser maior que 0 e menor que 100."
-	default:
-		return "Less than or equal"
-	}
-}
-
-func translateTagRequired(myStruct string) string {
-	switch myStruct {
-	case "models.User":
-		return ""
-	default:
-		return ""
 	}
 }

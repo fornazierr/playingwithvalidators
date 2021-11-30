@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"playingwitherrors/customvalidator"
@@ -24,31 +25,32 @@ func main() {
 	}
 	err := validate.Struct(withError)
 	if err != nil {
-		formated := customvalidator.FormatError(err)
-		fmt.Printf("Found:\n%+v\n", formated)
+		formated := customvalidator.FormatError(err, "")
+		formatedByte, _ := json.Marshal(formated)
+		fmt.Printf("Found:\n%s\n", string(formatedByte))
 	}
 
 	//////
 	////// Checking variables
 	//////
 
-	log.Println("Check CPF variable")
-	cpf := "12345899445"
-	err = customvalidator.Instance().Var(cpf, "required,min=11,max=11,cpf")
-	if err != nil {
-		formated := customvalidator.FormatError(err)
-		log.Printf("CPF [%s] error: %+v\n", cpf, formated)
-	} else {
-		log.Printf("CPF [%s] without error.\n", cpf)
-	}
+	// log.Println("Check CPF variable")
+	// cpf := "12345899445"
+	// err = customvalidator.Instance().Var(cpf, "required,min=11,max=11,cpf")
+	// if err != nil {
+	// 	formated := customvalidator.FormatError(err, "")
+	// 	log.Printf("CPF [%s] error: %+v\n", cpf, formated)
+	// } else {
+	// 	log.Printf("CPF [%s] without error.\n", cpf)
+	// }
 
-	log.Println("Check CNPJ variable")
-	cnpj := "11222333000181"
-	err = customvalidator.Instance().Var(cnpj, "required,min=14,max=14,cnpj")
-	if err != nil {
-		formated := customvalidator.FormatError(err)
-		log.Printf("CNPJ [%s] error: %+v\n", cnpj, formated)
-	} else {
-		log.Printf("CNPJ [%s] without error.\n", cpf)
-	}
+	// log.Println("Check CNPJ variable")
+	// cnpj := "11222333000181"
+	// err = customvalidator.Instance().Var(cnpj, "required,min=14,max=14,cnpj")
+	// if err != nil {
+	// 	formated := customvalidator.FormatError(err, "")
+	// 	log.Printf("CNPJ [%s] error: %+v\n", cnpj, formated)
+	// } else {
+	// 	log.Printf("CNPJ [%s] without error.\n", cpf)
+	// }
 }
