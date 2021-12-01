@@ -1,6 +1,7 @@
 package customvalidator
 
 import (
+	"fmt"
 	"log"
 	"playingwitherrors/models"
 	"strings"
@@ -112,7 +113,9 @@ func translateTagDefault(myTag string) string {
 		return "CPF not valid.."
 	case "required":
 		return "Fields required."
+	case "len":
+		return "Length not valid"
 	default:
-		return myTag
+		return fmt.Sprintf("Tag <%s> not identified.", myTag)
 	}
 }

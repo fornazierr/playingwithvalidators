@@ -53,7 +53,7 @@ func TranslateUserError(myField string, myTag string) string {
 		switch myTag {
 		case "required":
 			return "<CPF> field required."
-		case "length":
+		case "len":
 			return "<CPF> field lenght must be equal to 11 (eleven)."
 		case "cpf":
 			return "<CPF> field is not valid."
